@@ -13,9 +13,6 @@ env:
 jobs:
   build:
     runs-on: windows-2022
-    defaults:
-      run:
-        working-directory: ${{ env.WORK_DIR }}
     steps:
         # - name: Install boost
         #   uses: MarkusJx/install-boost@v2.4.4
