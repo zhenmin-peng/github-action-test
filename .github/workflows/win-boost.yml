@@ -17,9 +17,9 @@ jobs:
           uses: MarkusJx/install-boost@v2.4.4
           id: install-boost
           with:
-            boost_version: ${env:BOOST_VERSION}
+            boost_version: ${{ env.BOOST_VERSION }}
             # OPTIONAL: Specify a custon install location
-            boost_install_dir: ${env:BOOST_INSTALL_DIR}
+            boost_install_dir: ${{ env.BOOST_INSTALL_DIR }}
             # OPTIONAL: Specify a platform version
             platform_version: 2022
             # OPTIONAL: Specify a toolset
