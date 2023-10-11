@@ -7,7 +7,7 @@ env:
   BOOST_VERSION: 1.83.0
   BOOST_INSTALL_DIR: C:\local
   QUANTLIB_VERSION: v1.31.1
-  WORK_DIR: C:/src
+  WORK_DIR: C:\src
 
 
 jobs:
