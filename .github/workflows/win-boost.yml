@@ -6,7 +6,7 @@ on:
 env:
   BOOST_VERSION: 1.83.0
   BOOST_INSTALL_DIR: C:\local
-  QUANTLIB_VERSION: 1.31.1
+  QUANTLIB_VERSION: v1.31.1
 
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
           uses: actions/checkout@v4
           with:
             repository: lballabio/QuantLib
-            ref: v${env:QUANTLIB_VERSION}
+            ref: ${{ env.QUANTLIB_VERSION }}
         - name: Enable thread save observer pattern in QL source code
           run: |
            $filePath = '.\QuantLib\ql\userconfig.hpp'
