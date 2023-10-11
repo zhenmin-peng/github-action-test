@@ -34,6 +34,8 @@ jobs:
             repository: lballabio/QuantLib
             ref: ${{ env.QUANTLIB_VERSION }}
             path: QuantLib
+        - name: List boost content
+          run: ls .
         - name: Enable thread save observer pattern in QL source code
           run: |
            $filePath = '.\QuantLib\ql\userconfig.hpp'
