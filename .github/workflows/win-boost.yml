@@ -29,6 +29,7 @@ jobs:
           with:
             repository: lballabio/QuantLib
             ref: ${{ env.QUANTLIB_VERSION }}
+            path: QuantLib
         - name: Enable thread save observer pattern in QL source code
           run: |
            $filePath = '.\QuantLib\ql\userconfig.hpp'
