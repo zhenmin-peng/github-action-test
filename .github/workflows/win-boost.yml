@@ -8,9 +8,16 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-        - name: Download boost binary
-          run: Invoke-WebRequest "https://boostorg.jfrog.io/artifactory/main/release/1.83.0/binaries/boost_1_83_0-msvc-14.3-64.exe" -OutFile "C:\temp\boost.exe"
-        - name: Install boost binary
-          run: Start-Process -Wait -FilePath "C:\temp\boost.exe" -ArgumentList "/S" -PassThru
+        - name: Install boost
+          uses: MarkusJx/install-boost@v2.4.4
+          id: install-boost
+          with:
+            boost_version: 1.83.0
+            # OPTIONAL: Specify a custon install location
+            boost_install_dir: C:\local
+            # OPTIONAL: Specify a platform version
+            platform_version: 2022
+            # OPTIONAL: Specify a toolset
+            toolset: msvc
         - name: List boost content
-          run: ls -r C:\local
+          run: ls -r C:\local\boost\boost\lib
