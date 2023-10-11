@@ -3,21 +3,37 @@ name: Install Boost on Windows
 on:
   workflow_dispatch:
 
+env:
+  BOOST_VERSION: 1.83.0
+  BOOST_INSTALL_DIR: C:\local
+  QUANTLIB_VERSION: 1.31.1
+
 
 jobs:
   build:
     runs-on: windows-latest
     steps:
-        - name: Install boost
-          uses: MarkusJx/install-boost@v2.4.4
-          id: install-boost
+        # - name: Install boost
+        #   uses: MarkusJx/install-boost@v2.4.4
+        #   id: install-boost
+        #   with:
+        #     boost_version: ${BOOST_VERSION}
+        #     # OPTIONAL: Specify a custon install location
+        #     boost_install_dir: ${BOOST_INSTALL_DIR}
+        #     # OPTIONAL: Specify a platform version
+        #     platform_version: 2022
+        #     # OPTIONAL: Specify a toolset
+        #     toolset: msvc
+        - name: Checkout QuantLib
+          uses: actions/checkout@v4
           with:
-            boost_version: 1.83.0
-            # OPTIONAL: Specify a custon install location
-            boost_install_dir: C:\local
-            # OPTIONAL: Specify a platform version
-            platform_version: 2022
-            # OPTIONAL: Specify a toolset
-            toolset: msvc
-        - name: List boost content
-          run: ls -r C:\local\boost\boost\lib
+            repository: lballabio/QuantLib
+            ref: v${QUANTLIB_VERSION}
+        - name: Enable thread save observer pattern in QL source code
+          run: |
+           $filePath = '.\QuantLib\ql\userconfig.hpp'
+           $tempFilePath = "$env:TEMP\$($filePath | Split-Path -Leaf)"
+           $find = "//#    define QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN"
+           $replace = "#    define QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN"
+           (Get-Content -Path $filePath) -replace $find, $replace | Add-Content -Path $tempFilePath
+           Move-Item -Path $tempFilePath -Destination $filePath
