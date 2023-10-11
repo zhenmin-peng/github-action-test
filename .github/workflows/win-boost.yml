@@ -7,11 +7,15 @@ env:
   BOOST_VERSION: 1.83.0
   BOOST_INSTALL_DIR: C:\local
   QUANTLIB_VERSION: v1.31.1
+  WORK_DIR: C:/src
 
 
 jobs:
   build:
     runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WORK_DIR }}
     steps:
         # - name: Install boost
         #   uses: MarkusJx/install-boost@v2.4.4
