@@ -40,4 +40,5 @@ jobs:
            $find = "//#    define QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN"
            $replace = "#    define QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN"
            (Get-Content -Path $filePath) -replace $find, $replace | Add-Content -Path $tempFilePath
-           Move-Item -Path $tempFilePath -Destination $filePath
+           Get-Content -Path $tempFilePath
+           Move-Item -Path $tempFilePath -Destination $filePath -Force
