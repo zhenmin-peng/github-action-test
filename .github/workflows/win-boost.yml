@@ -1,0 +1,24 @@
+name: Install Boost on Windows
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+        - name: Install boost
+          uses: MarkusJx/install-boost@v2.4.4
+          id: install-boost
+          with:
+            boost_version: 1.83.0
+            # OPTIONAL: Specify a custon install location
+            boost_install_dir: C:\local
+            # OPTIONAL: Specify a platform version
+            platform_version: 2022
+            # OPTIONAL: Specify a toolset
+            toolset: msvc
+        - name: List boost content
+          run: ls -r C:\local
+             
