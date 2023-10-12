@@ -58,3 +58,7 @@ jobs:
            (Get-Content -Path $filePath) -replace $find, $replace | Add-Content -Path $tempFilePath
            Move-Item -Path $tempFilePath -Destination $filePath -Force
            Get-Content -Path $filePath
+        - name: Add msbuild to PATH
+          uses: microsoft/setup-msbuild@v1.1
+        - name: Build QuantLib-x64-mt.lib for release
+          run: msbuild .\QuantLib\QuantLib.vcxproj /nologo /p:Configuration=Release /p:PlatformTarget=x64 -t:rebuild
