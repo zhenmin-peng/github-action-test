@@ -27,6 +27,7 @@ jobs:
             platform_version: 2022
             # OPTIONAL: Specify a toolset
             toolset: msvc
+            link: shared
         - name: Checkout QuantLib
           uses: actions/checkout@v4
           with:
