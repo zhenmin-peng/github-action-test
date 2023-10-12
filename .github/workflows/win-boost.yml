@@ -1,19 +1,22 @@
 name: Install Boost on Windows
 
-on:
-  workflow_dispatch:
+# on:
+#   workflow_dispatch:
+  on:
+    push:
+      branches: [ main ]
 
 env:
   BOOST_VERSION: 1.83.0
   BOOST_INSTALL_DIR: C:\local
-  QUANTLIB_VERSION: v1.31.1
+  QUANTLIB_VERSION: 1.31.1
 
 
 jobs:
   build:
     runs-on: windows-2022
     steps:
-        - name: Install boost
+        - name: Install Boost
           uses: MarkusJx/install-boost@v2.4.4
           id: install-boost
           with:
@@ -28,7 +31,7 @@ jobs:
           uses: actions/checkout@v4
           with:
             repository: lballabio/QuantLib
-            ref: ${{ env.QUANTLIB_VERSION }}
+            ref: v${{ env.QUANTLIB_VERSION }}
             path: QuantLib
         - name: Enable thread save observer pattern in QL source code
           run: |
@@ -37,5 +40,21 @@ jobs:
            $find = "//#    define QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN"
            $replace = "#    define QL_ENABLE_THREAD_SAFE_OBSERVER_PATTERN"
            (Get-Content -Path $filePath) -replace $find, $replace | Add-Content -Path $tempFilePath
-           Get-Content -Path $tempFilePath
            Move-Item -Path $tempFilePath -Destination $filePath -Force
+        - name: Edit vcxproj to include Boost dependency for msbuild
+          run: |
+           $filePath = '.\QuantLib\QuantLib.vcxproj'
+           $tempFilePath = "$env:TEMP\$($filePath | Split-Path -Leaf)"
+           $find = @'
+           <PropertyGroup Label="UserMacros" />
+           '@
+           $replace = @'
+           <PropertyGroup Label="UserMacros" />
+           <PropertyGroup>
+             <IncludePath>${{ env.BOOST_INSTALL_DIR }}\boost\boost;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+             <LibraryPath>${{ env.BOOST_INSTALL_DIR }}\boost\boost\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+           </PropertyGroup>
+           '@
+           (Get-Content -Path $filePath) -replace $find, $replace | Add-Content -Path $tempFilePath
+           Move-Item -Path $tempFilePath -Destination $filePath -Force
+           Get-Content -Path $filePath
